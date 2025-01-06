@@ -1,0 +1,35 @@
+# GSTA block: Generalized Smoothed Trajectory Analysis
+# This section sets up the GSTA action, which applies a weighted moving average
+# to trajectory data. The following options can be configured:
+
+GSTA ...
+  # ATOMS: Specifies the list of atoms to process. "@allatoms" selects all atoms.
+  # If you want to restrict the action to a subset of atoms, replace "@allatoms"
+  # with a specific range or list, e.g., "1-100" for the first 100 atoms.
+  ATOMS=@allatoms    
+
+  # OUTPUT_STRIDE: Sets the frequency of writing smoothed coordinates to the output file.
+  # For example, OUTPUT_STRIDE=10 writes every 10th timestep to the output file.
+  OUTPUT_STRIDE=10
+
+  # OUTPUT_FILE: Name of the XYZ file where the smoothed trajectory will be written.
+  # In this case, the smoothed data will be saved to "filt_water_traj.xyz".
+  OUTPUT_FILE=filt_water_traj.xyz
+
+  # SYMBOL_FILE: Specifies the input XYZ file containing atomic symbols and coordinates.
+  # This file is required to determine atom types for the output XYZ file.
+  # Here, the input file is "water_traj.xyz".
+  SYMBOL_FILE=water_traj.xyz
+
+  # KERNEL_FILE: Name of the file containing the kernel (weights) for the smoothing operation.
+  # This file should contain the weights in the order specified in the documentation.
+  # In this case, the kernel is defined in "kernel.dat".
+  KERNEL_FILE=kernel.dat
+... GSTA
+
+# PRINT command:
+# The PRINT command ensures that the GSTA action is executed during the simulation.
+# Without this command, PLUMED does not call the calculate() method of the action.
+# In this case, the "dummy" component of the GSTA action is referenced.
+# The output is directed to /dev/null to suppress unnecessary output.
+PRINT ARG=@0.dummy FILE=/dev/null
